@@ -2,8 +2,11 @@ package main
 
 import (
 	"fmt"
+	"time"
 )
 
 func main() {
-	fmt.Println("Hello world")
+	now := time.Now()
+	year := now.Year()
+	fmt.Println(year)
 }
