@@ -1,55 +1,28 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"log"
-	"math/rand"
-	"os"
-	"strconv"
-	"strings"
-	"time"
 )
 
 func main() {
-	seconds := time.Now().Unix()
-	//rand.Seed(seconds)
-	rand.NewSource(seconds) // seed the random number generator
-	target := rand.Intn(100) + 1
-	fmt.Println("I've chosen a random number between  1 and 100.")
-	fmt.Println("Can you guess it?")
-
-	reader := bufio.NewReader(os.Stdin)
-
-	success := false
-	for guesses := 0; guesses < 10; guesses++ {
-		fmt.Println("You have", 10-guesses, "guesses left.")
-
-		fmt.Print("Make a guess: ")
-		input, err := reader.ReadString('\n')
-		if err != nil {
-			log.Fatal(err)
-		}
-		input = strings.TrimSpace(input)
-		guess, err := strconv.Atoi(input)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		if guess < target {
-			fmt.Println("Oops. Your guess was LOW.")
-		} else if guess > target {
-			fmt.Println("Oops. Your guess was HIGH.")
-		} else {
-			success = true
-			fmt.Println("Good job! You guessed it!")
-			break
-		}
-
+	amount, err := paintNeeded(4.2, -3.0)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Printf("%0.2f liters needed\n", amount)
 	}
 
-	if !success {
-		fmt.Println("Sorry, you didn't guess my number. It was:", target)
+}
+
+func paintNeeded(width float64, height float64) (float64, error) {
+	if width < 0 {
+		return 0, fmt.Errorf("a width od %0.2f is invalid", width)
 	}
 
+	if height < 0 {
+		return 0, fmt.Errorf("a height of %0.2f is invalid", height)
+	}
+
+	area := width * height
+	return area / 10.0, nil // nil indicating there was no error
 }
