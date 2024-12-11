@@ -2,31 +2,22 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"log"
-	"os"
-	"strconv"
-	"strings"
+
+	"wakisa.com/keyboard"
 )
 
 func TestResult() {
 	fmt.Print("Enter a grade: ")
-	reader := bufio.NewReader(os.Stdin)
-	input, err := reader.ReadString('\n')
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	input = strings.TrimSpace(input)
-	grade, err := strconv.ParseFloat(input, 64)
+	grade, err := keyboard.GetFloat()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	var status string
 	if grade >= 60 {
-		status = "Passing"
+		status = "passing"
 	} else {
 		status = "failing"
 	}
