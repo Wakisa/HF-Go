@@ -6,7 +6,7 @@ import (
 
 	"log"
 
-	"wakisa.com/keyboard"
+	"github.com/wakisa/keyboard"
 )
 
 func ConvertTemperature() {

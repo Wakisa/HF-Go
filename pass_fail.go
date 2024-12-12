@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"wakisa.com/keyboard"
+	"github.com/wakisa/keyboard"
 )
 
 func TestResult() {
