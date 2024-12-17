@@ -3,11 +3,20 @@ package main
 
 import (
 	"fmt"
+	"log"
+
+	"wakisa.com/datafile"
 )
 
 func main() {
-	fmt.Println(average(100, 50))
-	fmt.Println(average(90.7, 89.7, 98.5, 92.3))
+	numbers, err := datafile.GetFloats("data.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	//for _, number := range numbers {
+	numbers = append(numbers, numbers...)
+	//}
+	fmt.Println(average(numbers...))
 }
 
 func average(numbers ...float64) float64 {
