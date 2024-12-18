@@ -4,23 +4,22 @@ package main
 
 import (
 	"fmt"
+	"log"
+
+	"wakisa.com/datafile"
 )
 
 func main() {
-
-	data := []string{"a", "c", "e", "a", "e"}
+	lines, err := datafile.GetStrings("votes.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
 	counts := make(map[string]int)
-	for _, item := range data {
-		counts[item]++
+	for _, line := range lines {
+		counts[line]++ // increment the vote count for the current candidate(key)
+	}
+	for name, count := range counts {
+		fmt.Printf("Votes for %s: %d\n", name, count)
 	}
 
-	letters := []string{"a", "b", "c", "d", "e"}
-	for _, letter := range letters {
-		count, ok := counts[letter]
-		if !ok {
-			fmt.Printf("%s: not found\n", letter)
-		} else {
-			fmt.Printf("%s: %d\n", letter, count)
-		}
-	}
 }
