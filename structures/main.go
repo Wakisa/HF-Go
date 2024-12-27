@@ -7,29 +7,9 @@ import (
 )
 
 func main() {
-	subscriber1 := defaultSubscriber("Aman Singh")
-	applyDiscount(subscriber1)
-	printInfo(subscriber1)
+	address := magazine.Address{Street: "123 Oak St", City: "Omala", State: "NE", PostalCode: "68111"}
+	subscriber := magazine.Subscriber{Name: "Aman Singh"}
+	subscriber.HomeAddress = address
+	fmt.Println(subscriber.HomeAddress)
 
-	subscriber2 := defaultSubscriber("Beth Ryan")
-	printInfo(subscriber2)
-}
-
-// returns a subscriber value
-func defaultSubscriber(name string) *magazine.Subscriber {
-	var s magazine.Subscriber
-	s.Name = name
-	s.Rate = 5.99
-	s.Active = true
-	return &s
-}
-
-func printInfo(s *magazine.Subscriber) {
-	fmt.Println("Name:", s.Name)
-	fmt.Println("Monthly rate:", s.Rate)
-	fmt.Println("Active?", s.Active)
-}
-
-func applyDiscount(s *magazine.Subscriber) {
-	s.Rate = 4.99
 }
