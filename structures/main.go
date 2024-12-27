@@ -7,9 +7,25 @@ import (
 )
 
 func main() {
-	address := magazine.Address{Street: "123 Oak St", City: "Omala", State: "NE", PostalCode: "68111"}
+
 	subscriber := magazine.Subscriber{Name: "Aman Singh"}
-	subscriber.Address = address //calling annonymous struct field in magazine package
-	fmt.Println(subscriber.Address)
+	subscriber.Street = "123 Oak St"
+	subscriber.City = "Omaha"
+	subscriber.State = "NE"
+	subscriber.PostalCode = "68111"
+	fmt.Println("Street:", subscriber.Street)
+	fmt.Println("City:", subscriber.City)
+	fmt.Println("State:", subscriber.State)
+	fmt.Println("Postal Code", subscriber.PostalCode)
+
+	employee := magazine.Employee{Name: "Joy Carr"}
+	employee.Street = "456 Elm St"
+	employee.City = "Portland"
+	employee.State = "OR"
+	employee.PostalCode = "97222"
+	fmt.Println("Street:", employee.Street)
+	fmt.Println("City:", employee.City)
+	fmt.Println("State:", employee.State)
+	fmt.Println("Postal Code:", employee.PostalCode)
 
 }
