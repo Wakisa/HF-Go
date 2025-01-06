@@ -22,5 +22,10 @@ func main() {
 	playList(player, mixtape)               // Pass a TapePlayer variable to hold to plyaList
 	player = gadget.TapeRecoder{}
 	playList(player, mixtape)
+	recorder, ok := player.(gadget.TapeRecoder)
+	if ok {
+		recorder.Record()
+	}
+	recorder.Stop()
 
 }
