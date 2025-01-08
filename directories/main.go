@@ -4,19 +4,33 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 )
 
-func main() {
-	files, err := os.ReadDir("directories/my_directory")
+func scanDirectory(path string) error {
+	fmt.Println(path)              // printl current directory
+	files, err := os.ReadDir(path) // get a slice with the directory's contents.
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	for _, file := range files {
+		filePath := filepath.Join(path, file.Name())
 		if file.IsDir() {
-			fmt.Println("Directory:", file.Name())
+			err := scanDirectory(filePath)
+			if err != nil {
+				return err
+			}
 		} else {
-			fmt.Println("File:", file.Name())
+			fmt.Println(filePath)
 		}
+	}
+	return nil
+}
+
+func main() {
+	err := scanDirectory("directories")
+	if err != nil {
+		log.Fatal(err)
 	}
 }
