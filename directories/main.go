@@ -6,6 +6,17 @@ import (
 	"path/filepath"
 )
 
+func reportPanic() {
+	p := recover() // Call revover and store its return value
+	if p == nil {  // if recover returned nil, there is no panic...
+		return // so do nothing
+	}
+	err, ok := p.(error) // otherwise, get hte underluing error value...
+	if ok {
+		fmt.Println(err) // and print it
+	}
+}
+
 func scanDirectory(path string) {
 	fmt.Println(path)              // printl current directory
 	files, err := os.ReadDir(path) // get a slice with the directory's contents.
@@ -26,6 +37,7 @@ func scanDirectory(path string) {
 }
 
 func main() {
-	scanDirectory("directories")
+	defer reportPanic()
+	scanDirectory("my_directory")
 
 }
