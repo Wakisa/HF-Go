@@ -14,6 +14,8 @@ func reportPanic() {
 	err, ok := p.(error) // otherwise, get hte underluing error value...
 	if ok {
 		fmt.Println(err) // and print it
+	} else {
+		panic(p) // if the panic value isn't an error, resume panicking with the same value.
 	}
 }
 
@@ -38,6 +40,7 @@ func scanDirectory(path string) {
 
 func main() {
 	defer reportPanic()
+	panic("some other issue")
 	scanDirectory("my_directory")
 
 }
