@@ -40,7 +40,7 @@ func scanDirectory(path string) {
 
 func main() {
 	defer reportPanic()
-	panic("some other issue")
+
 	scanDirectory("my_directory")
 
 }

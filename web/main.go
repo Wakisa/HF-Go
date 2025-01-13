@@ -5,13 +5,15 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"time"
 )
 
 func main() {
 	// get the sizes of several web pages
-	responseSize("https://example.com/")
-	responseSize("https://golang.org/")
-	responseSize("https://golang.org/doc")
+	go responseSize("https://example.com/")
+	go responseSize("https://golang.org/")
+	go responseSize("https://golang.org/doc")
+	time.Sleep(5 * time.Second) // Sleep for 5 seconds to allow the goroutines to finish
 }
 
 func responseSize(url string) {
