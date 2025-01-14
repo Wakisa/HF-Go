@@ -5,18 +5,22 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"time"
 )
 
 func main() {
-	// get the sizes of several web pages
-	go responseSize("https://example.com/")
-	go responseSize("https://golang.org/")
-	go responseSize("https://golang.org/doc")
-	time.Sleep(5 * time.Second) // Sleep for 5 seconds to allow the goroutines to finish
+	// get the sizes of several web pages using channels
+	sizes := make(chan int) // make a channel of int values
+	go responseSize("https://example.com/", sizes)
+	go responseSize("https://golang.org/", sizes)
+	go responseSize("https://golang.org/doc", sizes)
+
+	// There will be three sends on the channel, so do three receives
+	fmt.Println(<-sizes)
+	fmt.Println(<-sizes)
+	fmt.Println(<-sizes)
 }
 
-func responseSize(url string) {
+func responseSize(url string, channel chan int) {
 	fmt.Println("Getting", url)    // print which URL we are retriving
 	response, err := http.Get(url) // get the given URL
 	if err != nil {
@@ -27,5 +31,5 @@ func responseSize(url string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(len(body)) // the size of the slice of bytes is the same as the size of the page.
+	channel <- len(body) // the size of the slice of bytes is the same as the size of the page.
 }
