@@ -7,20 +7,27 @@ import (
 	"net/http"
 )
 
-func main() {
-	// get the sizes of several web pages using channels
-	sizes := make(chan int) // make a channel of int values
-	go responseSize("https://example.com/", sizes)
-	go responseSize("https://golang.org/", sizes)
-	go responseSize("https://golang.org/doc", sizes)
-
-	// There will be three sends on the channel, so do three receives
-	fmt.Println(<-sizes)
-	fmt.Println(<-sizes)
-	fmt.Println(<-sizes)
+type Page struct {
+	URL  string
+	Size int
 }
 
-func responseSize(url string, channel chan int) {
+func main() {
+	// get the sizes of several web pages using channels
+	pages := make(chan Page) // make a channel of Page value
+	urls := []string{"https://example.com/", "https://golang.org/", "https://golang.org/doc"}
+
+	for _, url := range urls {
+		go responseSize(url, pages) // Pass the channel to responseSize.
+	}
+	for i := 0; i < len(urls); i++ {
+		page := <-pages // Receive the Page
+		fmt.Printf("%s: %d\n", page.URL, page.Size)
+	}
+
+}
+
+func responseSize(url string, channel chan Page) {
 	fmt.Println("Getting", url)    // print which URL we are retriving
 	response, err := http.Get(url) // get the given URL
 	if err != nil {
@@ -31,5 +38,5 @@ func responseSize(url string, channel chan int) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	channel <- len(body) // the size of the slice of bytes is the same as the size of the page.
+	channel <- Page{URL: url, Size: len(body)} // the size of the slice of bytes is the same as the size of the page.
 }
