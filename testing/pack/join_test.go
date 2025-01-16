@@ -5,6 +5,15 @@ import (
 	"testing"
 )
 
+func TestOneElement(t *testing.T) {
+	list := []string{"apple"} // Pass a slice with one string.
+	want := "apple"           // Expect to return value to consist of just that one string
+	got := JoinWithCommas(list)
+	if got != want {
+		t.Error(errorString(list, got, want))
+	}
+
+}
 func TestTwoElements(t *testing.T) {
 	list := []string{"apple", "orange"}
 	want := "apple and orange"
