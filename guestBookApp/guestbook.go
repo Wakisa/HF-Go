@@ -1,10 +1,17 @@
 package main
 
 import (
+	"bufio"
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 )
+
+type Guestbook struct {
+	SignatureCount int
+	Signatures     []string
+}
 
 func check(err error) {
 	if err != nil {
@@ -13,9 +20,15 @@ func check(err error) {
 }
 
 func viewHandler(writer http.ResponseWriter, request *http.Request) {
+	signatures := getStrings("signatures.txt") // Add call to getStrings
+
 	html, err := template.ParseFiles("view.html") // Use the contents of view.html to create a new Template
 	check(err)
-	err = html.Execute(writer, nil) // Write the template content to the ResponseWriter
+	guestbook := Guestbook{
+		SignatureCount: len(signatures), // Set its SignatureCount to the lenght of the signatures slice
+		Signatures:     signatures,      // Sets its Signatures field to signatures slice itself.
+	}
+	err = html.Execute(writer, guestbook) // Write the template content to the ResponseWriter
 	check(err)
 }
 
@@ -23,4 +36,21 @@ func main() {
 	http.HandleFunc("/guestbook", viewHandler)
 	err := http.ListenAndServe("localhost:8080", nil)
 	log.Fatal(err)
+}
+
+func getStrings(fileName string) []string {
+	var lines []string
+	file, err := os.Open(fileName) // Open the file
+	if os.IsNotExist(err) {
+		return nil
+	}
+	check(err)
+	defer file.Close()
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+
+	check(scanner.Err())
+	return lines
 }
