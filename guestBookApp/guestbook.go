@@ -1,6 +1,7 @@
 package main
 
 import (
+	"html/template"
 	"log"
 	"net/http"
 )
@@ -12,8 +13,9 @@ func check(err error) {
 }
 
 func viewHandler(writer http.ResponseWriter, request *http.Request) {
-	placeholder := []byte("signature list goes here") // We convert a string to a slice of bytes
-	_, err := writer.Write(placeholder)
+	html, err := template.ParseFiles("view.html") // Use the contents of view.html to create a new Template
+	check(err)
+	err = html.Execute(writer, nil) // Write the template content to the ResponseWriter
 	check(err)
 }
 
