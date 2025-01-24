@@ -39,9 +39,16 @@ func newHandler(writer http.ResponseWriter, request *http.Request) {
 	check(err)
 }
 
+func createHandler(writer http.ResponseWriter, request *http.Request) {
+	signature := request.FormValue("signature") // Get the value of the "signature" form field
+	_, err := writer.Write([]byte(signature))   // Write the field value to the response.
+	check(err)
+}
+
 func main() {
 	http.HandleFunc("/guestbook", viewHandler)
 	http.HandleFunc("/guestbook/new", newHandler)
+	http.HandleFunc("/guestbook/create", createHandler)
 	err := http.ListenAndServe("localhost:8080", nil)
 	log.Fatal(err)
 }
