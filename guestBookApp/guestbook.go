@@ -32,8 +32,16 @@ func viewHandler(writer http.ResponseWriter, request *http.Request) {
 	check(err)
 }
 
+func newHandler(writer http.ResponseWriter, request *http.Request) {
+	html, err := template.ParseFiles("new.html") // Load the contents of new.html as the text of a template
+	check(err)
+	err = html.Execute(writer, nil) // Write the template to the response (there's no need to insert any data in it)
+	check(err)
+}
+
 func main() {
 	http.HandleFunc("/guestbook", viewHandler)
+	http.HandleFunc("/guestbook/new", newHandler)
 	err := http.ListenAndServe("localhost:8080", nil)
 	log.Fatal(err)
 }
