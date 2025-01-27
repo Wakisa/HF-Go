@@ -12,7 +12,8 @@ func check(err error) {
 }
 
 func main() {
-	file, err := os.OpenFile("aardvark.txt", os.O_WRONLY, os.FileMode(0600))
+	options := os.O_WRONLY | os.O_APPEND // Use the bitwise OR to combine the two values
+	file, err := os.OpenFile("aardvark.txt", options, os.FileMode(0600))
 	check(err)
 	_, err = file.Write([]byte("amazing!\n")) // Write data to the file.
 	check(err)
